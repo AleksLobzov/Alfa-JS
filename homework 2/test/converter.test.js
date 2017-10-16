@@ -1,4 +1,4 @@
-import converter from '../src/script';
+import converter from '../src/converter';
 
 const operations = [
     {
@@ -106,7 +106,7 @@ describe('converter', function() {
 
   it('test 1', function() {
 
-    expect(converter(operations)).toBe(result);
+    expect(converter(operations)).toEqual(result);
 
   });
 

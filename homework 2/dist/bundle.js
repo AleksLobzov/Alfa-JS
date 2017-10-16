@@ -69,7 +69,7 @@
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__script_js__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__converter__ = __webpack_require__(1);
 
 
 const operations = [
@@ -111,7 +111,7 @@ const operations = [
 
 ];
 
-Object(__WEBPACK_IMPORTED_MODULE_0__script_js__["a" /* default */])(operations);
+Object(__WEBPACK_IMPORTED_MODULE_0__converter__["a" /* default */])(operations);
 
 
 /***/ }),
@@ -124,38 +124,49 @@ function converter(operations) {
 
     const semiResultObj = {};
 
+    // Заполняем массивы операций и ссылок
     operations.forEach(function(item, i, operations) {
 
-        // Заполняем массивы операций и ссылок
         if (semiResultObj[item.date] === undefined) {
 
             semiResultObj[item.date] = { "operations": [], "links": [] };
-            semiResultObj[item.date]["operations"] = [item];
-            semiResultObj[item.date]["links"] = [item['links']];
+            semiResultObj[item.date]["operations"].push(item);
+
+            const links = item['links'];
+            links.forEach(function(item2, i2, links) {
+                semiResultObj[item.date]["links"].push(item2);
+            });
 
         } else {
 
             semiResultObj[item.date]["operations"].push(item);
-            semiResultObj[item.date]["links"].push(item['links']);
+
+            const links = item['links'];
+            links.forEach(function(item2, i2, links) {
+                semiResultObj[item.date]["links"].push(item2);
+            });
 
         };
 
-        // Сортируем свойства объекта по датам в порядке убывания
-        const resultObj = Object.keys(semiResultObj)
+    });
+
+    // Сортируем свойства объекта по датам в порядке убывания
+    const resultObj = {};
+
+    const sortedSemiObj = Object.keys(semiResultObj)
                                 .sort()
                                 .reverse()
                                 .map(
                                      function(key) {
-                                         console.log(key);
-                                         return { key: semiResultObj[key] }
+
+                                         resultObj[key] = semiResultObj[key]
 
                                      }
                                 );
 
-        console.log(resultObj);
-        return resultObj;
+    console.log(resultObj);
 
-    });
+    return resultObj;
 
 }
 
